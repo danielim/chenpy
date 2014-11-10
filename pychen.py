@@ -9,6 +9,7 @@ Inspiration from: http://wiki.shelliu.org/w/Writing_an_IRC_bot_in_Python
 import socket
 import pyscrape
 import tldrwiki
+import re
 from chatfunc import chatFunc
 
 # Connect to server and join channel
@@ -34,18 +35,27 @@ class connect:
 
             if ircmsg.find("PING :") != -1:
                 cf.ping(self.ircsock)
-#"if" conditional test to replace current ones. Enable finding the trigger "|" (pipe) and figure out what command is requested.
-            if ircmsg.find("|")  != -1:
-                ircarg = ircmsg.split(' ', 3)
-                # ircarg[0] = User
-                # ircarg[1] = IRC command (PRIVMSG, NICK, etc)
-                # ircarg[2] = Channel
-                # ircarg[3] = Message
-                msg = ircarg[3]
-                if msg[1:2] == "|":
-                    cmd = msg[1:] 
-                    cmd = cmd.split(' ') 
-                     
+
+            # split ircmsg
+            # ircarg[0] = User
+            # ircarg[1] = IRC command (PRIVMSG, NICK, etc)
+            # ircarg[2] = Channel
+            # ircarg[3] = Message
+            else:
+                try:
+                    ircarg = ircmsg.split(" ", 3)
+                    if ircarg[3][1:2] == "|":
+                        try:
+                            cmd = ircarg[3][2:]
+                            cmd = cmd.split(" ") 
+                            usr = re.search("(?<=:)(.*)(?=\!)", ircarg[0]).group(1)
+                            #print usr + " ==> " + str(cmd)
+                            cf.shakehandler(self.channel, self.ircsock, cmd) 
+                        except:
+                            self.ircsock.send("NOTICE "+ self.channel +" :"+"No such command" +"\n") 
+                except:
+                    pass 
+
 #            if ircmsg.find(":|Hello "+ self.botnick) != -1:
 #                cf.hello(self.channel, self.ircsock)
 #        
