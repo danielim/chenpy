@@ -37,6 +37,8 @@ def outputOCR():
     
     txt = txt.replace("\r"," ")
     txt = txt.replace("\n"," ")
+    txt = txt.replace("  "," ")
+    txt = txt.split(" ", 1)
     #print txt
     #print "================"
     #print word_boxes
@@ -46,4 +48,4 @@ def outputOCR():
     #digits = tool.image_to_string(Image.open('test-digits.png'),
     #                              lang=lang,
     #                              builder=pyocr.tesseract.DigitBuilder())
-    return txt
+    return txt[1]

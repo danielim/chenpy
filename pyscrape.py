@@ -6,7 +6,7 @@ from wand.image import Image # Image manipulator http://wand-py.org
 from urllib2 import urlopen # Open image url for imageMagickWand to parse
 from datetime import datetime
 
-def pyScrape(i):    
+def pyScrape():    
     page = requests.get('http://tldrwikipedia.tumblr.com/')
     parsed_html = page.text
     tree = html.fromstring(page.text)
@@ -15,7 +15,7 @@ def pyScrape(i):
     #print tree
     post= tree.find_class('post photo')
     # Take first instance of the post photo div list
-    div_photo = html.tostring(post[i])
+    div_photo = html.tostring(post[0])
     # Remove whitespace and then add in single spaces
     div_clean = ' '.join(div_photo.split())
     # Re-parse individual posts
@@ -25,7 +25,7 @@ def pyScrape(i):
     pDate = divtree.find_class('date')
     print div_clean
     print pImages[0]
-    print pDate[0].text_content() 
+    print pDate[0].text_content()
     return {'pImage': str(pImages[0]), 'pDate': str(pDate[0].text_content())}    
     #call(['convert', 'test.png -colorspace RGB +sigmoidal-contrast 11.69 -define filter:filter=Sinc -define filter:window=Jinc -define filter:lobes=3 -resize 400% -sigmoidal-contrast 11.69 -colorspace sRGB output.png'])
     '''

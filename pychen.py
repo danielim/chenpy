@@ -7,8 +7,6 @@ Inspiration from: http://wiki.shelliu.org/w/Writing_an_IRC_bot_in_Python
 '''
 
 import socket
-import pyscrape
-import tldrwiki
 import re
 from chatfunc import chatFunc
 
@@ -34,7 +32,7 @@ class connect:
             cf = chatFunc() 
 
             if ircmsg.find("PING :") != -1:
-                cf.ping(self.ircsock)
+                self.ircsock.send("PONG :Pong\n")
 
             # split ircmsg
             # ircarg[0] = User
@@ -45,16 +43,12 @@ class connect:
                 try:
                     ircarg = ircmsg.split(" ", 3)
                     if ircarg[3][1:2] == "|":
-                        try:
-                            cmd = ircarg[3][2:]
-                            cmd = cmd.split(" ") 
-                            usr = re.search("(?<=:)(.*)(?=\!)", ircarg[0]).group(1)
-                            #print usr + " ==> " + str(cmd)
-                            cf.shakehandler(self.channel, self.ircsock, cmd) 
-                        except:
-                            self.ircsock.send("NOTICE "+ self.channel +" :"+"No such command" +"\n") 
+                        cmd = ircarg[3][2:]
+                        usr = re.search("(?<=:)(.*)(?=\!)", ircarg[0]).group(1)
+                        cf.handshaker(usr, self.channel, self.ircsock, cmd) 
+                # This exception mostly only handles nickname change, this is because /nick only has 3 parts, can't be split 3 times.
                 except:
-                    pass 
+                    raise 
 
 #            if ircmsg.find(":|Hello "+ self.botnick) != -1:
 #                cf.hello(self.channel, self.ircsock)
