@@ -50,3 +50,14 @@ def resizeImg(pImages):
         print 'final size: ' + str(img.size)
     f.close()
 #resizeImg()
+
+def someecardParse(arg):
+    page = requests.get('http://tldr.someecards.com/wiki/'+arg+'/')
+    tree = html.fromstring(page.text)
+    post = tree.find_class('left-half')
+    if len(post) >= 1:
+        sctxt = post[0].text_content()
+        sctxt = " ".join(sctxt.split()) 
+    else:
+        sctxt = "definition not found."
+    return sctxt

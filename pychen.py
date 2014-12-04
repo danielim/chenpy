@@ -46,9 +46,10 @@ class connect:
                         cmd = ircarg[3][2:]
                         usr = re.search("(?<=:)(.*)(?=\!)", ircarg[0]).group(1)
                         cf.handshaker(usr, self.channel, self.ircsock, cmd) 
+                        
                 # This exception mostly only handles nickname change, this is because /nick only has 3 parts, can't be split 3 times.
-                except:
-                    raise 
+                except Exception as e:
+                    print e 
 
 #            if ircmsg.find(":|Hello "+ self.botnick) != -1:
 #                cf.hello(self.channel, self.ircsock)
