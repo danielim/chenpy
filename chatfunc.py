@@ -21,6 +21,10 @@ class chatFunc:
         self.ircsock.send("PRIVMSG "+ self.channel +" :"+ msg +"\n")
     def hello(self):
         self.ircsock.send("PRIVMSG "+ self.channel +" :Hello!\n")
+    def facepalm(self):
+        self.ircsock.send("PRIVMSG "+ self.channel +" :http://imgur.com/niUhJSP\n")
+    def hi5(self):
+        self.ircsock.send("PRIVMSG "+ self.channel +" :balalalalala~\n")
     def latesttldrwiki(self):
         import pyscrape
         import tldrwiki

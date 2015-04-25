@@ -58,5 +58,5 @@ class connect:
 #                cf.latesttldrwiki(self.ircsock)
 
 if __name__ == "__main__":
-    irc = connect("irc.drwilco.net", 6667, "#bottest", "pychen")
+    irc = connect("anarchy.tamu.edu", 6667, "#bottest", "pychen")
     irc.loopy()
